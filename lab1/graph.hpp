@@ -4,8 +4,10 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <list>
 /**
 *   Kuba Kowalski
+*   Paweł Gumny
 **/
 
 struct Edge
@@ -30,7 +32,7 @@ private:
     //value ->  vector of seconds vertices b with proper cost
     //a<b always
 
-    std::map<int, std::set<Edge> > E;
+    std::map<int, std::multiset<Edge> > E;
     //key   ->  cost
     //value ->  vector of edges
     std::map<float, std::vector<std::pair<int, int> > > Ecost;
@@ -38,17 +40,21 @@ private:
     int getN();
     int DFSRec(int current, std::map<int, int> &visited, int cun);
     std::vector<int> findNeighbors(int ver);
+    std::list<int> cycle(int beginVertex);
 public:
     void putEdge(int a, int b, float c);
-    void putEdge(Edge e);
+    void putEdge(const Edge &e);
     void putVertex(int v);
     void print();
     Graph primMST();
     std::map<int, int> DFS(int root);
-    Graph getOddSubgraph();
-
-
-    void sometest(std::vector<int> *vv, int cun);
+    std::set<int> oddVertices();
+    Graph subgraph(std::set<int> vertices);
+    Graph minimumWeightedMatching();
+    Graph graphUnion(Graph G);
+    std::list<int> eulerianCycle();
+    static std::list<int> makeEulerianCycleHamiltonian(const std::list<int>& eulerianCycle);
+    std::list<int> christofides();
 };
 
 
