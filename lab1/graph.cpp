@@ -12,68 +12,48 @@
 
 using namespace std;
 
+int Graph::getN()
+{
+    return V.size();
+}
+
 void Graph::putEdge(int a, int b, float cost)
 {
     if(a==b) return;
 
-
     //adding vertices without repetition
-    bool v1=true;
-    bool v2=true;
-    for(auto ver : V)
-    {
-        if(v1 && ver==a) v1=false;
-        if(v2 && ver==b) v2=false;
-    }
-    if(v1) {V.push_back(a); n++;}
-    if(v2) {V.push_back(b); n++;}
-
+    V.insert(a);
+    V.insert(b);
 
     //adding edge without repetition
     if(a>b)
+        std::swap(a,b);
+
+    if(E[a].count({a,b,0})==0)
     {
-        int c=a;
-        a=b;
-        b=c;
-    }
-    bool v=true;
-    for(auto ver : E[a])
-    {
-        if(ver.first==b)
-        {
-            v = false;
-            break;
-        }
-    }
-    if(v)
-    {
-        E[a].push_back(pair<int, float>(b, cost));
-        Ecost[cost].push_back(pair<int, int>(a,b));
         m++;
+        E[a].insert({a, b, cost});
+        E[b].insert({b, a, cost});
+        Ecost[cost].push_back({a,b});
     }
 }
 
+void Graph::putEdge(Edge e)
+{
+    putEdge(e.beginVertex, e.endVertex, e.cost);
+}
+
+void Graph::putVertex(int v)
+{
+    V.insert(v);
+}
 
 vector<int> Graph::findNeighbors(int ver)
 {
     vector<int> ret;
-    for(auto edg : E)
+    for(auto edge : E[ver])
     {
-        if(edg.first>ver) break;
-
-        if(edg.first==ver)
-        {
-            for(auto ver2 : edg.second)
-            {
-                ret.push_back(ver2.first);
-            }
-            break;
-        }
-
-        for(auto ver2 : edg.second)
-        {
-            if(ver2.first==ver) ret.push_back(edg.first);
-        }
+        ret.push_back(edge.endVertex);
     }
 
     return ret;
@@ -87,7 +67,7 @@ void Graph::print()
     {
         printf("%d ", ver);
     }
-    printf("\nLength: %d\n\n", n);
+    printf("\nLength: %d\n\n", getN());
 
     printf("Edges:\n");
     for(auto edg : E)
@@ -95,7 +75,7 @@ void Graph::print()
         printf("From: %d\n", edg.first);
         for(auto ver : edg.second)
         {
-            printf("%d(%.1f) ", ver.first, ver.second);
+            printf("%d(%.1f) ", ver.endVertex, ver.cost);
         }
         printf("\n");
     }
@@ -126,7 +106,7 @@ Graph Graph::primMST()
     visited[b] = true;
     ret.putEdge(a,b,c);
 
-    while(visited.size()<n)
+    while(visited.size() < getN())
     {
         for(auto cost : Ecost)
         {
@@ -153,15 +133,18 @@ Graph Graph::primMST()
 
 Graph Graph::getOddSubgraph()
 {
-    std::vector<int> oddVertices;
-    for(auto vertex : E)
-        if(vertex.second.size() %2) oddVertices.push_back(vertex.first);
-
     Graph ret;
+    std::set<int> oddVertices;
+    for(auto neighbours : E)
+        if(neighbours.second.size() %2)
+		{
+			ret.putVertex(neighbours.first);
+            oddVertices.insert(neighbours.first);
+		}
     for(auto vertex : oddVertices)
         for(auto neighbour : E[vertex])
-            if(std::binary_search(oddVertices.begin(), oddVertices.end(), neighbour.first))
-                ret.putEdge(vertex, neighbour.first, neighbour.second);
+            if(oddVertices.count(neighbour.endVertex))
+                ret.putEdge(neighbour);
 
     return ret;
 }
@@ -194,8 +177,3 @@ void Graph::sometest(vector<int> *vv, int cun)
     vv->push_back(cun);
     if(cun!=0) sometest(vv, cun-1);
 }
-
-
-
-
-

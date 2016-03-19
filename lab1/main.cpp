@@ -47,7 +47,9 @@ int main()
     }
     printf("\n");
 
+	std::cout<<"Odd subgraph"<<std::endl;
     G.getOddSubgraph().print();
+	std::cout<<"Odd subgraph of mst"<<std::endl;
     mst.getOddSubgraph().print();
 
     return 0;
