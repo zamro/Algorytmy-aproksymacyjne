@@ -38,17 +38,17 @@ int main()
     printf("\nMST!!\n");
     mst.print();
 
-    std::map<int, int> dfs;
-    mst.DFS(7, &dfs, 1);
+    auto dfs = mst.DFS(7);
     printf("\nDFS!!\n");
     printf("vertex\torder\n");
-    for(std::map<int, int>::iterator pr=dfs.begin(); pr!=dfs.end(); pr++)
+    for(auto pr : dfs)
     {
-        printf("%d\t%d\n", pr->first, pr->second);
+        printf("%d\t%d\n", pr.first, pr.second);
     }
     printf("\n");
-    //std::vector<int> vv;
-    //G.sometest(&vv, 5);
-    //while(!vv.empty()) {printf("%d\n", vv.back()); vv.pop_back();}
+
+    G.getOddSubgraph().print();
+    mst.getOddSubgraph().print();
+
     return 0;
 }

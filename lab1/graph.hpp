@@ -21,13 +21,15 @@ private:
     //value ->  vector of edges
     std::map<float, std::vector<std::pair<int, int> > > Ecost;
 
+    int DFSRec(int current, std::map<int, int> &visited, int cun);
     std::vector<int> findNeighbors(int ver);
 public:
     Graph() {n=0; m=0;};
     void putEdge(int a, int b, float c);
     void print();
     Graph primMST();
-    int DFS(int current, std::map<int, int> *visited, int cun);
+    std::map<int, int> DFS(int root);
+    Graph getOddSubgraph();
 
 
     void sometest(std::vector<int> *vv, int cun);

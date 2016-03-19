@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <utility>
+#include <algorithm>
 
 #include "graph.hpp"
 /**
@@ -150,19 +151,41 @@ Graph Graph::primMST()
     return ret;
 }
 
+Graph Graph::getOddSubgraph()
+{
+    std::vector<int> oddVertices;
+    for(auto vertex : E)
+        if(vertex.second.size() %2) oddVertices.push_back(vertex.first);
 
-int Graph::DFS(int current, map<int, int> *visited, int cun)
+    Graph ret;
+    for(auto vertex : oddVertices)
+        for(auto neighbour : E[vertex])
+            if(std::binary_search(oddVertices.begin(), oddVertices.end(), neighbour.first))
+                ret.putEdge(vertex, neighbour.first, neighbour.second);
+
+    return ret;
+}
+
+int Graph::DFSRec(int current, map<int, int> &visited, int cun)
 {
     vector<int> neighbors = findNeighbors(current);
-    (*visited)[current]=cun;
+    visited[current]=cun;
     for(auto ver : neighbors)
     {
-        if((*visited)[ver]==0)
+        if(visited[ver]==0)
         {
-            cun = DFS(ver, visited, cun+1);
+            cun = DFSRec(ver, visited, cun+1);
         }
     }
     return cun;
+}
+
+
+std::map<int, int> Graph::DFS(int root)
+{
+    std::map<int, int> dfs;
+    DFSRec(root, dfs, 1);
+    return dfs;
 }
 
 
