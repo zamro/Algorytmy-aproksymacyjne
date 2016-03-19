@@ -10,7 +10,7 @@
 class Graph
 {
 private:
-    int n,m;
+    int n = 0, m = 0;
     //vertices
     std::vector<int> V;
     //key   ->  first vertex a
@@ -24,7 +24,6 @@ private:
     int DFSRec(int current, std::map<int, int> &visited, int cun);
     std::vector<int> findNeighbors(int ver);
 public:
-    Graph() {n=0; m=0;};
     void putEdge(int a, int b, float c);
     void print();
     Graph primMST();
