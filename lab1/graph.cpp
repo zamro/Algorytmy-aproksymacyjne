@@ -233,7 +233,11 @@ std::list<int> Graph::eulerianCycle()
     while(insertionPoint != out.end())
     {
         std::list<int> list = G.cycle(*insertionPoint);
-        insertionPoint = out.insert(insertionPoint, list.begin(), --list.end());
+        auto oldInsertionPoint = insertionPoint;
+        oldInsertionPoint--;
+        out.insert(insertionPoint, list.begin(), --list.end());
+        insertionPoint = oldInsertionPoint;
+        insertionPoint++;
         while(insertionPoint != out.end() && G.E[*insertionPoint].size() == 0)
             insertionPoint++;
     }
