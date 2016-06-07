@@ -17,7 +17,7 @@ public class MAXSAT
     public static void main(String[] args) {
         Vector<Clause> clauses = new Vector<>();
         try {
-            FileReader fr = new FileReader("ex01");
+            FileReader fr = new FileReader("ex02");
             BufferedReader tr = new BufferedReader(fr);
             String line = tr.readLine();
             while (line!=null)
@@ -36,7 +36,12 @@ public class MAXSAT
         }
         
         Johnson J = new Johnson(clauses);
-        double w = J.findSolution();
+        double wJ = J.findSolution();
+        
+        Derandomization D = new Derandomization(clauses);
+        double wD = D.findSolution();
+        
+        System.out.println("\nwJ: " + wJ + "\nwD: " + wD);
         
         /*
         TEST for ex01 file

@@ -28,7 +28,7 @@ public class Johnson {
     public double findSolution() {
         Random rand = new Random();
         int[] val = new int[maxIndex];
-        System.out.println("Johnson");
+        System.out.println("\nJohnson");
         for(int i=0; i<maxIndex; i++) {
             val[i] = rand.nextBoolean()?1:0;
             System.out.print(val[i] + " ");

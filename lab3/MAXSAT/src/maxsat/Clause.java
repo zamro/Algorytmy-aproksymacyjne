@@ -40,6 +40,25 @@ public class Clause {
         return maxIndex;
     }
     
+    public double prob(int[] values) {
+        int unused = 0;
+        int ret = 0;
+        for(int i=0; i<variables.length; i++) {
+            if(variables[i]>0) {
+                if (values[variables[i]-1] < 0) unused++;
+                else ret |= values[variables[i]-1];
+            }
+            else {
+                if (values[-variables[i]-1] < 0) unused++;
+                ret |= 1^values[-variables[i]-1];
+            }
+        }
+        
+        if(unused>0) return (1.0f -  pow(0.5f, (double) unused))*weight;
+        if(ret>1 || ret<0) throw new IllegalArgumentException("Wrong argument");
+        return weight * ret;
+    }
+    
     @Override
     public String toString(){
         String ret = "";
