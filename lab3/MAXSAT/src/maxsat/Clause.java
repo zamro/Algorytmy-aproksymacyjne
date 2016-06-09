@@ -50,13 +50,13 @@ public class Clause {
             }
             else {
                 if (values[-variables[i]-1] < 0) unused++;
-                ret |= 1^values[-variables[i]-1];
+                else ret |= 1^values[-variables[i]-1];
             }
         }
         
-        if(unused>0) return (1.0f -  pow(0.5f, (double) unused))*weight;
         if(ret>1 || ret<0) throw new IllegalArgumentException("Wrong argument");
-        return weight * ret;
+        if(ret==1) return weight;
+        return (1.0f -  pow(0.5f, (double) unused))*weight;
     }
     
     @Override

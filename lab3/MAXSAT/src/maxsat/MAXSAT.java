@@ -41,7 +41,7 @@ public class MAXSAT
         Derandomization D = new Derandomization(clauses);
         double wD = D.findSolution();
         
-        System.out.println("\nwJ: " + wJ + "\nwD: " + wD);
+        System.out.println("\nJohnson: " + wJ + "\nDerandomization: " + wD);
         
         /*
         TEST for ex01 file
